@@ -106,8 +106,20 @@ class DynamicFieldsBloc {
     }
   }
 
-  void submit() {
-    print('Actions');    
+  Map submit() {
+    final users = {};
+
+    for (int i = 0; i < nameFields.length; i++) {
+      users[i] = {
+        'name': nameFields.value[i].value,
+        'age': ageFields.value[i].value
+      };
+    }
+
+    users.forEach(
+        (k, v) => print('User ${k + 1} - Name: ${v['name']}, age: ${v['age']}'));
+
+    return users;
   }
 
   void removeFields(int index) {
@@ -125,7 +137,7 @@ class DynamicFieldsBloc {
 
     for (var item in ageFields.value) {
       item.dispose();
-    }    
+    }
     ageFields.dispose();
 
     isFormValid.dispose();

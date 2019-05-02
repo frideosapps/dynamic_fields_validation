@@ -6,6 +6,8 @@ import 'package:frideos/frideos.dart';
 
 import 'bloc.dart';
 
+import 'users_page.dart';
+
 const TextStyle buttonText = TextStyle(color: Colors.white);
 
 class DynamicFieldsPage extends StatefulWidget {
@@ -39,6 +41,15 @@ class DynamicFieldsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _sendUsersPage() {
+      final users = bloc.submit();
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => UsersPage(users: users)),
+      );
+    }
+
     List<Widget> _buildFields(int length) {
       // Clear the TextEditingControllers lists
       nameFieldsController.clear();
@@ -75,31 +86,42 @@ class DynamicFieldsWidget extends StatelessWidget {
             );
           },
           noDataChild: const Text('NO DATA'),
+        ),        
+        RaisedButton(
+          color: Colors.green,
+          child: const Text('Add more fields', style: buttonText),
+          onPressed: bloc.newFields,
         ),
-        Container(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            RaisedButton(
-              color: Colors.green,
-              child: const Text('Add more fields', style: buttonText),
-              onPressed: bloc.newFields,
-            ),
-            StreamBuilder<bool>(
-                stream: bloc.isFormValid.outStream,
-                builder: (context, snapshot) {
-                  return RaisedButton(
+        StreamBuilder<bool>(
+            stream: bloc.isFormValid.outStream,
+            builder: (context, snapshot) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  RaisedButton(
                     color: Colors.blue,
                     child: snapshot.hasData
                         ? snapshot.data
                             ? const Text('Submit', style: buttonText)
-                            : const Text('Form not valid', style: buttonText)
+                            : const Text('Form not valid',
+                                style: buttonText)
                         : const Text('Form not valid', style: buttonText),
                     onPressed: snapshot.hasData ? bloc.submit : null,
-                  );
-                }),
-          ],
-        ),
+                  ),
+                  RaisedButton(
+                    color: Colors.blue,
+                    child: snapshot.hasData
+                        ? snapshot.data
+                            ? const Text('Send to UsersPage',
+                                style: buttonText)
+                            : const Text('Form not valid',
+                                style: buttonText)
+                        : const Text('Form not valid', style: buttonText),
+                    onPressed: snapshot.hasData ? _sendUsersPage : null,
+                  ),
+                ],
+              );
+            }),
       ],
     );
   }
