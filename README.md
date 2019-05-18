@@ -1,12 +1,4 @@
 # Dynamic fields validation example
 
-A Flutter example on how to validate dynamically created fields with the BLoC pattern and the [frideos](https://pub.dartlang.org/packages/frideos) package.
+Example moved [here](https://github.com/frideosapps/frideos_examples/tree/master/07_dynamic_fields_validation). 
 
-
-### Packages used:
-
-- [Frideos-flutter](https://pub.dartlang.org/packages/frideos)
-
-
-## Screenshots
-![Screenshot](screenshots/1.png)
